@@ -1,5 +1,17 @@
 # Agent Guidelines
 
+## Architecture
+
+Before making any structural or implementation decision, read [`ARCHITECTURE.md`](./ARCHITECTURE.md). All new code must respect the ports and adapters layering defined there:
+
+- UI code goes in `app/src/` and calls the application layer only.
+- Use cases and port interfaces go in `src/application/`.
+- Domain logic goes in `src/domain/` — no framework or I/O dependencies.
+- Adapter implementations go in `src/infrastructure/`.
+- Adapters are wired up at startup; nothing else instantiates them directly.
+
+If a decision touches layer boundaries, dependency direction, or the introduction of a new external dependency, consult `ARCHITECTURE.md` first.
+
 ## Development Approach
 
 All new capabilities must be introduced using **outside-in TDD** following a strict red-green-refactor cycle at both levels:
