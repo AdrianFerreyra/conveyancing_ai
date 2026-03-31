@@ -8,6 +8,23 @@ import { CaseCard } from './CaseCard'
 import { CaseChat } from './CaseChat'
 import { TaskGraph } from './TaskGraph'
 
+const SUPPORT_EMAIL = 'd.chen@ourfirm.co.uk'
+const SUPPORT_PHONE = '0117 300 4500'
+
+function ErrorCard({ title, message }: { title: string; message: string }) {
+  return (
+    <div className="error-card">
+      <p className="error-card-title">{title}</p>
+      <p className="error-card-message">{message}</p>
+      <p className="error-card-contact">
+        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+        <span className="error-card-sep">·</span>
+        <a href={`tel:${SUPPORT_PHONE.replace(/\s/g, '')}`}>{SUPPORT_PHONE}</a>
+      </p>
+    </div>
+  )
+}
+
 interface Props {
   getCaseTasks: (caseId: string) => Promise<CaseTask[]>
   getCase: (caseId: string) => Promise<ConveyancingCase | null>
@@ -21,13 +38,33 @@ function App({ getCaseTasks, getCase, getCaseConversation }: Props) {
   const [taskGraph, setTaskGraph] = useState<TaskGraphModel | null>(null)
   const [conveyancingCase, setConveyancingCase] = useState<ConveyancingCase | null>(null)
   const [conversation, setConversation] = useState<CaseConversation | null>(null)
+  const [caseNotFound, setCaseNotFound] = useState(false)
 
   useEffect(() => {
     if (!caseId) return
     getCaseTasks(caseId).then((tasks: CaseTask[]) => setTaskGraph(buildTaskGraph(tasks)))
-    getCase(caseId).then(setConveyancingCase)
+    getCase(caseId).then((result) => {
+      if (result === null) setCaseNotFound(true)
+      else setConveyancingCase(result)
+    })
     getCaseConversation(caseId).then(setConversation)
   }, [caseId, getCaseTasks, getCase, getCaseConversation])
+
+  if (caseId && caseNotFound) {
+    return (
+      <div className="app">
+        <header className="app-header">
+          <h1>Conveyancing AI</h1>
+        </header>
+        <main className="app-main">
+          <ErrorCard
+            title="Case can't be found"
+            message={`No case was found for ID "${caseId}". Please check your link or contact us for assistance.`}
+          />
+        </main>
+      </div>
+    )
+  }
 
   if (caseId) {
     return (
@@ -62,7 +99,10 @@ function App({ getCaseTasks, getCase, getCaseConversation }: Props) {
         <h1>Conveyancing AI</h1>
       </header>
       <main className="app-main">
-        <p>Ready.</p>
+        <ErrorCard
+          title="Case ID is required"
+          message="No case ID was provided in the URL. Please check your link or contact us for assistance."
+        />
       </main>
     </div>
   )

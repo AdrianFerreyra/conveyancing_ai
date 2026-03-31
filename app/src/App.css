@@ -227,3 +227,52 @@
     grid-template-columns: 18px 90px 1fr;
   }
 }
+
+/* ── Error card ── */
+
+.error-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.error-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.error-card-message {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.error-card-contact {
+  font-size: 0.875rem;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.error-card-contact a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.error-card-contact a:hover {
+  text-decoration: underline;
+}
+
+.error-card-sep {
+  color: #9ca3af;
+}
