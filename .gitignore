@@ -5,3 +5,5 @@ app/dist/
 app/playwright-report/
 app/test-results/
 .claude
+.env
+app/.env

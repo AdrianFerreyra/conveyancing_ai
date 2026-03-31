@@ -8,25 +8,43 @@ import { JsonTasksRepository } from '../../src/infrastructure/JsonTasksRepositor
 import { JsonCaseRepository } from '../../src/infrastructure/JsonCaseRepository'
 import { createGetCaseTasks } from '../../src/application/getCaseTasks'
 import { createGetCase } from '../../src/application/getCase'
+import { createGetCaseConversation } from '../../src/application/getCaseConversation'
+import { MockCaseExplainerAgent } from '../../src/infrastructure/MockCaseExplainerAgent'
+import type { CaseExplainerAgent } from '../../src/application/ports/CaseExplainerAgent'
 import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
 import type { CaseTask } from '../../src/domain/task'
 
-const tasksRepo = new JsonTasksRepository(tasksData.tasks as CaseTask[])
-const getCaseTasks = createGetCaseTasks(tasksRepo)
+;(async () => {
+  const tasksRepo = new JsonTasksRepository(tasksData.tasks as CaseTask[])
+  const getCaseTasks = createGetCaseTasks(tasksRepo)
 
-// Assemble the full domain object from the JSON file's separate sections
-const conveyancingCase: ConveyancingCase = {
-  ...caseData.case,
-  property: caseData.property,
-  parties: caseData.parties,
-  financials: caseData.financials,
-} as ConveyancingCase
+  // Assemble the full domain object from the JSON file's separate sections
+  const conveyancingCase: ConveyancingCase = {
+    ...caseData.case,
+    property: caseData.property,
+    parties: caseData.parties,
+    financials: caseData.financials,
+  } as ConveyancingCase
 
-const caseRepo = new JsonCaseRepository(conveyancingCase)
-const getCase = createGetCase(caseRepo)
+  const caseRepo = new JsonCaseRepository(conveyancingCase)
+  const getCase = createGetCase(caseRepo)
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App getCaseTasks={getCaseTasks} getCase={getCase} />
-  </StrictMode>,
-)
+  const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined
+  const useMock = import.meta.env.VITE_USE_MOCK_AI === 'true'
+
+  let explainerAgent: CaseExplainerAgent
+  if (!useMock && apiKey) {
+    const { OpenAICaseExplainerAgent } = await import('../../src/infrastructure/OpenAICaseExplainerAgent')
+    explainerAgent = new OpenAICaseExplainerAgent(apiKey)
+  } else {
+    explainerAgent = new MockCaseExplainerAgent()
+  }
+
+  const getCaseConversation = createGetCaseConversation(caseRepo, tasksRepo, explainerAgent)
+
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App getCaseTasks={getCaseTasks} getCase={getCase} getCaseConversation={getCaseConversation} />
+    </StrictMode>,
+  )
+})()
