@@ -68,6 +68,20 @@ cd app && npx playwright test --ui
 
 ---
 
+## Reviewing the app
+
+Start the dev server (`cd app && npm run dev`) then open these URLs to exercise the key scenarios:
+
+| Scenario | URL |
+|---|---|
+| Valid case — happy path | `http://localhost:5173/case/CASE-2024-0847` |
+| Invalid case ID — case not found | `http://localhost:5173/case/CASE-INVALID` |
+| Missing case ID — no ID provided | `http://localhost:5173/case/` |
+
+The valid case (`CASE-2024-0847`) shows the full experience: AI-generated summary, task board, and event timeline. The error cases verify that the app handles bad input gracefully with clear, user-friendly messaging.
+
+---
+
 ## Capabilities
 
 - **AI-generated case summaries** — converts raw case data into a friendly, conversational explanation of where things stand and what happens next.
