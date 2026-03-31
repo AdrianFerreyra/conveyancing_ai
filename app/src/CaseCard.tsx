@@ -1,4 +1,4 @@
-import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
+import type { ConveyancingCase } from './domain/conveyancingCase'
 
 interface Props {
   conveyancingCase: ConveyancingCase

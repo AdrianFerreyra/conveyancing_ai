@@ -6,6 +6,7 @@
     "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false,
     "noEmit": false,
+    "erasableSyntaxOnly": false,
     "types": ["jest"]
   }
 }

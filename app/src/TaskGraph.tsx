@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import type { CaseTask } from '../../src/domain/task'
-import type { TaskGraph } from '../../src/domain/taskGraph'
+import type { CaseTask } from './domain/task'
+import type { TaskGraph } from './domain/taskGraph'
 import {
   NODE_W,
   NODE_H,

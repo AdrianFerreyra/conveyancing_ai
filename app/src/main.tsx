@@ -5,17 +5,17 @@ import App from './App.tsx'
 import tasksData from '@data/tasks.json'
 import caseData from '@data/case.json'
 import eventsData from '@data/events.json'
-import { JsonTasksRepository } from '../../src/infrastructure/JsonTasksRepository'
-import { JsonCaseRepository } from '../../src/infrastructure/JsonCaseRepository'
-import { JsonEventsRepository } from '../../src/infrastructure/JsonEventsRepository'
-import { createGetCaseTasks } from '../../src/application/getCaseTasks'
-import { createGetCase } from '../../src/application/getCase'
-import { createGetCaseConversation } from '../../src/application/getCaseConversation'
-import { MockCaseExplainerAgent } from '../../src/infrastructure/MockCaseExplainerAgent'
-import type { CaseExplainerAgent } from '../../src/application/ports/CaseExplainerAgent'
-import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
-import type { CaseTask } from '../../src/domain/task'
-import type { CaseEvent } from '../../src/domain/caseEvent'
+import { JsonTasksRepository } from './infrastructure/JsonTasksRepository'
+import { JsonCaseRepository } from './infrastructure/JsonCaseRepository'
+import { JsonEventsRepository } from './infrastructure/JsonEventsRepository'
+import { createGetCaseTasks } from './application/getCaseTasks'
+import { createGetCase } from './application/getCase'
+import { createGetCaseConversation } from './application/getCaseConversation'
+import { MockCaseExplainerAgent } from './infrastructure/MockCaseExplainerAgent'
+import type { CaseExplainerAgent } from './application/ports/CaseExplainerAgent'
+import type { ConveyancingCase } from './domain/conveyancingCase'
+import type { CaseTask } from './domain/task'
+import type { CaseEvent } from './domain/caseEvent'
 
 ;(async () => {
   const tasksRepo = new JsonTasksRepository(tasksData.tasks as CaseTask[])
@@ -39,7 +39,7 @@ import type { CaseEvent } from '../../src/domain/caseEvent'
 
   let explainerAgent: CaseExplainerAgent
   if (!useMock && apiKey) {
-    const { OpenAICaseExplainerAgent } = await import('../../src/infrastructure/OpenAICaseExplainerAgent')
+    const { OpenAICaseExplainerAgent } = await import('./infrastructure/OpenAICaseExplainerAgent')
     explainerAgent = new OpenAICaseExplainerAgent(apiKey)
   } else {
     explainerAgent = new MockCaseExplainerAgent()

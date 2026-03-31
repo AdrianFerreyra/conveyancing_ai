@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest && jest --config jest.app.config.json"
+    "test": "jest --config jest.app.config.json"
   },
   "repository": {
     "type": "git",
@@ -15,16 +15,6 @@
     "jest": "^30.3.0",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "testMatch": [
-      "**/*.test.ts"
-    ]
   },
   "dependencies": {
     "openai": "^6.33.0"
