@@ -211,3 +211,19 @@
   background: #d1d5db;
   margin: 0 auto;
 }
+
+/* ── Mobile layout ── */
+
+@media (max-width: 767px) {
+  .app-main {
+    padding: 1rem;
+  }
+
+  .case-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .case-card-field {
+    grid-template-columns: 18px 90px 1fr;
+  }
+}
