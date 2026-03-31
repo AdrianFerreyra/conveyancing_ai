@@ -9,8 +9,9 @@ import { JsonCaseRepository } from '../../src/infrastructure/JsonCaseRepository'
 import { createGetCaseTasks } from '../../src/application/getCaseTasks'
 import { createGetCase } from '../../src/application/getCase'
 import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
+import type { CaseTask } from '../../src/domain/task'
 
-const tasksRepo = new JsonTasksRepository(tasksData.tasks)
+const tasksRepo = new JsonTasksRepository(tasksData.tasks as CaseTask[])
 const getCaseTasks = createGetCaseTasks(tasksRepo)
 
 // Assemble the full domain object from the JSON file's separate sections
