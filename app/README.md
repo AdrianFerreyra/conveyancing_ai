@@ -1,3 +1,25 @@
+# Conveyancing AI
+
+## Setup
+
+### OpenAI API Key
+
+This app uses OpenAI to generate plain-English explanations of conveyancing cases. You need an API key to enable this feature.
+
+1. Copy the example env file (or create `app/.env` if it doesn't exist):
+   ```sh
+   cp app/.env app/.env.local
+   ```
+2. Open `app/.env` and replace the placeholder with your real key:
+   ```
+   VITE_OPENAI_API_KEY=your-openai-api-key-here
+   ```
+3. Get an API key from [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
+
+> Without a valid key the app falls back to mock data automatically.
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
