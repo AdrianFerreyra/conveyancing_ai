@@ -4,8 +4,10 @@ import './index.css'
 import App from './App.tsx'
 import tasksData from '@data/tasks.json'
 import caseData from '@data/case.json'
+import eventsData from '@data/events.json'
 import { JsonTasksRepository } from '../../src/infrastructure/JsonTasksRepository'
 import { JsonCaseRepository } from '../../src/infrastructure/JsonCaseRepository'
+import { JsonEventsRepository } from '../../src/infrastructure/JsonEventsRepository'
 import { createGetCaseTasks } from '../../src/application/getCaseTasks'
 import { createGetCase } from '../../src/application/getCase'
 import { createGetCaseConversation } from '../../src/application/getCaseConversation'
@@ -13,10 +15,13 @@ import { MockCaseExplainerAgent } from '../../src/infrastructure/MockCaseExplain
 import type { CaseExplainerAgent } from '../../src/application/ports/CaseExplainerAgent'
 import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
 import type { CaseTask } from '../../src/domain/task'
+import type { CaseEvent } from '../../src/domain/caseEvent'
 
 ;(async () => {
   const tasksRepo = new JsonTasksRepository(tasksData.tasks as CaseTask[])
   const getCaseTasks = createGetCaseTasks(tasksRepo)
+
+  const eventsRepo = new JsonEventsRepository(eventsData.events as CaseEvent[])
 
   // Assemble the full domain object from the JSON file's separate sections
   const conveyancingCase: ConveyancingCase = {
@@ -40,7 +45,7 @@ import type { CaseTask } from '../../src/domain/task'
     explainerAgent = new MockCaseExplainerAgent()
   }
 
-  const getCaseConversation = createGetCaseConversation(caseRepo, tasksRepo, explainerAgent)
+  const getCaseConversation = createGetCaseConversation(caseRepo, tasksRepo, eventsRepo, explainerAgent)
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

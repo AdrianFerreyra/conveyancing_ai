@@ -1,10 +1,11 @@
 import type { ConveyancingCase } from '../domain/conveyancingCase'
 import type { CaseTask } from '../domain/task'
+import type { CaseEvent } from '../domain/caseEvent'
 import type { CaseConversation } from '../domain/conversation'
 import type { CaseExplainerAgent } from '../application/ports/CaseExplainerAgent'
 
 export class MockCaseExplainerAgent implements CaseExplainerAgent {
-  async explainCase(conveyancingCase: ConveyancingCase, _tasks: CaseTask[]): Promise<CaseConversation> {
+  async explainCase(conveyancingCase: ConveyancingCase, _tasks: CaseTask[], _events: CaseEvent[]): Promise<CaseConversation> {
     return {
       caseId: conveyancingCase.id,
       messages: [
