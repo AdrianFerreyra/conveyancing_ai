@@ -1,0 +1,11 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "roots": ["<rootDir>/app/src"],
+  "testMatch": ["**/*.test.ts"],
+  "globals": {
+    "ts-jest": {
+      "tsconfig": "<rootDir>/app/tsconfig.jest.json"
+    }
+  }
+}

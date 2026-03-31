@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import type { CaseTask } from '../../src/domain/task'
 import type { ConveyancingCase } from '../../src/domain/conveyancingCase'
+import { buildTaskGraph, type TaskGraph as TaskGraphModel } from '../../src/domain/taskGraph'
 import { CaseCard } from './CaseCard'
+import { TaskGraph } from './TaskGraph'
 
 interface Props {
   getCaseTasks: (caseId: string) => Promise<CaseTask[]>
@@ -13,12 +15,12 @@ function App({ getCaseTasks, getCase }: Props) {
   const match = window.location.pathname.match(/^\/case\/(.+)$/)
   const caseId = match?.[1]
 
-  const [tasks, setTasks] = useState<CaseTask[] | null>(null)
+  const [taskGraph, setTaskGraph] = useState<TaskGraphModel | null>(null)
   const [conveyancingCase, setConveyancingCase] = useState<ConveyancingCase | null>(null)
 
   useEffect(() => {
     if (!caseId) return
-    getCaseTasks(caseId).then(setTasks)
+    getCaseTasks(caseId).then((tasks: CaseTask[]) => setTaskGraph(buildTaskGraph(tasks)))
     getCase(caseId).then(setConveyancingCase)
   }, [caseId, getCaseTasks, getCase])
 
@@ -36,7 +38,9 @@ function App({ getCaseTasks, getCase }: Props) {
                 : <p>Loading case…</p>}
             </div>
             <div className="tasks-column">
-              <pre>{tasks !== null ? JSON.stringify(tasks, null, 2) : 'Loading tasks…'}</pre>
+              {taskGraph !== null
+                ? <TaskGraph graph={taskGraph} />
+                : <p>Loading tasks…</p>}
             </div>
           </div>
         </main>

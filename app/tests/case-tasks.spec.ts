@@ -1,9 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test('displays tasks for a case in JSON format', async ({ page }) => {
+test('displays tasks for a case as a graph', async ({ page }) => {
   await page.goto('/case/CASE-2024-0847');
 
-  const body = await page.locator('body');
-  await expect(body).toContainText('CASE-2024-0847');
-  await expect(body).toContainText('TASK-001');
+  await expect(page.locator('.task-graph')).toBeVisible();
+  await expect(page.locator('[data-testid="task-node"]').first()).toContainText('TASK-001');
 });
