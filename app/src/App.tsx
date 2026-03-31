@@ -41,6 +41,12 @@ function App({ getCaseTasks, getCase, getCaseConversation }: Props) {
   const [caseNotFound, setCaseNotFound] = useState(false)
 
   useEffect(() => {
+    if (caseId) {
+      document.title = `Case ${caseId} — Conveyancing AI`
+    }
+  }, [caseId])
+
+  useEffect(() => {
     if (!caseId) return
     getCaseTasks(caseId).then((tasks: CaseTask[]) => setTaskGraph(buildTaskGraph(tasks)))
     getCase(caseId).then((result) => {
@@ -70,22 +76,25 @@ function App({ getCaseTasks, getCase, getCaseConversation }: Props) {
     return (
       <div className="app">
         <header className="app-header">
-          <h1>Conveyancing AI</h1>
+          <div className="app-header-inner">
+            <h1>Conveyancing AI</h1>
+            <span className="app-header-case-id">Case {caseId}</span>
+          </div>
         </header>
         <main className="app-main">
           <div className="case-layout">
             <div>
               {conveyancingCase
                 ? <CaseCard conveyancingCase={conveyancingCase} />
-                : <p>Loading case…</p>}
+                : <div className="loading-skeleton loading-skeleton--card" />}
             </div>
             <div className="tasks-column">
               {taskGraph !== null
                 ? <TaskGraph graph={taskGraph} />
-                : <p>Loading tasks…</p>}
-{conversation
+                : <div className="loading-skeleton loading-skeleton--graph" />}
+              {conversation
                 ? <CaseChat messages={conversation.messages} />
-                : <p>Loading explanation…</p>}
+                : <p className="loading-text">Loading explanation…</p>}
             </div>
           </div>
         </main>
@@ -96,7 +105,9 @@ function App({ getCaseTasks, getCase, getCaseConversation }: Props) {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Conveyancing AI</h1>
+        <div className="app-header-inner">
+          <h1>Conveyancing AI</h1>
+        </div>
       </header>
       <main className="app-main">
         <ErrorCard
